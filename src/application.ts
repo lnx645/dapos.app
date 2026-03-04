@@ -1,14 +1,14 @@
 import fastifyAccepts from "@fastify/accepts";
-import type { FastifyServer } from "@/interfaces/server";
 import { registerRoutes } from "@/routes";
 import diPlugin from "@/plugins/di";
 import fastifyWebsocket from "@fastify/websocket";
 import fastifyHelmet from "@fastify/helmet";
 import fastifyCors from "@fastify/cors";
 import fastifyView from "@fastify/view";
+import type { FastifyInstance } from "fastify";
 export class Application {
-  app: FastifyServer;
-  constructor(fastify: FastifyServer) {
+  app: FastifyInstance;
+  constructor(fastify: FastifyInstance) {
     this.app = fastify;
   }
   public async stop() {
@@ -29,7 +29,7 @@ export class Application {
   private async initPlugin() {
     this.app.register(fastifyHelmet, { global: true });
     this.app.register(fastifyCors);
-    this.app.register(diPlugin);
+    this.app.register(diPlugin)
     this.app.register(fastifyAccepts);
     this.app.register(fastifyWebsocket);
     this.app.register(fastifyView, { engine: { ejs: require("ejs") } });
